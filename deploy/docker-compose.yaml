@@ -1,0 +1,77 @@
+---
+version : '3.9'
+
+services:
+  db:
+    image: postgres:15-alpine
+
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    ports:
+      - 5433:5432
+    volumes:
+      - pg_data_bot3:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      timeout: 3s
+      retries: 10
+      interval: 3s
+    networks:
+      - my_network_bot
+
+  redis:
+    container_name: redis_cached_bot
+    image: redis
+    restart: always
+    environment:
+      REDIS_HOST: redis_cached_bot
+    ports:
+      - 6379:6379
+    networks:
+      - my_network_bot
+
+  api:
+    platform: linux/amd64
+    image: vladimirbodrin/the_factory_bot_task:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    command: python manage.py runserver 0.0.0.0:8080
+    networks:
+      - my_network_bot
+
+  bot:
+    platform: linux/amd64
+    image: vladimirbodrin/the_factory_bot_task:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_started
+    command: python manage.py runbot
+    networks:
+      - my_network_bot
+
+
+volumes :
+  pg_data_bot3:
+
+networks:
+  my_network_bot:
+    driver: bridge

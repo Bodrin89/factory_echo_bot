@@ -1,0 +1,57 @@
+---
+name: Build and deploy
+on  :
+  push:
+    branches:
+      - master
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clone code
+        uses: actions/checkout@v3
+      - name: docker build
+        run: docker build -t vladimirbodrin/the_factory_bot_task:$GITHUB_REF_NAME-$GITHUB_RUN_ID -f deploy/Dockerfile .
+      - name: docker_login
+        run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: docker push
+        run: docker push vladimirbodrin/the_factory_bot_task:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+    steps:
+      - name: clone code
+        uses: actions/checkout@v3
+      - name: render docker-compose
+        run: |
+          mkdir factory_bot
+          cat deploy/docker-compose.yaml | envsubst > factory_bot/docker-compose.yaml
+      - name: Copy docker-compose
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERV_HOST }}
+          username: ${{ secrets.SERV_USERNAME }}
+          password: ${{ secrets.SERV_PASSWORD }}
+          source: factory_bot/docker-compose.yaml
+          target: factory_bot
+          strip_components: 1
+
+      - name: Run compose
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERV_HOST }}
+          username: ${{ secrets.SERV_USERNAME }}
+          password: ${{ secrets.SERV_PASSWORD }}
+          script: |
+            cd factory_bot
+            docker-compose pull
+            docker-compose up -d
+      - name: Cleanup
+        if: always()
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERV_HOST }}
+          username: ${{ secrets.SERV_USERNAME }}
+          password: ${{ secrets.SERV_PASSWORD }}
+          script: |
+            docker system prune -a -f
