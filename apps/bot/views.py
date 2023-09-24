@@ -1,4 +1,5 @@
 import logging
+import os
 
 from django.conf import settings
 from django.core.cache import cache
@@ -20,11 +21,6 @@ class SendMessage(CreateAPIView):
     serializer_class = CreateListMessageSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
-        logger.debug(user)
-        return Message.objects.select_related('user').filter(user_id=user.pk)
-
     def create(self, request, *args, **kwargs) -> Response:
         """Создание нового сообщения и запись данных в кэш"""
         try:
@@ -44,6 +40,7 @@ class ListMessage(ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        if message_from_cache := cache.get(settings.MESSAGE_CACHE_NAME + str(user.id)):
-            return message_from_cache
+        if cache.get(settings.MESSAGE_CACHE_NAME + str(user.id)) and os.environ['TEST_ENV'] == 'not_test':
+            return cache.get(settings.MESSAGE_CACHE_NAME + str(user.id))
         return Message.objects.select_related('user').filter(user_id=user.pk)
+

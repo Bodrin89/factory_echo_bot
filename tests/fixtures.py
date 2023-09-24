@@ -2,6 +2,7 @@ import pytest
 from rest_framework.test import APIClient
 import logging
 
+from bot_task import settings
 
 logger = logging.getLogger('main')
 
@@ -9,7 +10,6 @@ logger = logging.getLogger('main')
 @pytest.fixture
 def client() -> APIClient:
     return APIClient()
-
 
 @pytest.fixture
 def get_auth_client(client: APIClient, user) -> APIClient:

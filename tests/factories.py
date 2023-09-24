@@ -2,7 +2,7 @@ import uuid
 
 import factory.django
 
-from apps.bot.models import Message
+from apps.bot.models import Message, Bot
 from apps.user.models import User
 
 
@@ -42,3 +42,12 @@ class MessageNotOwnerFactory(factory.django.DjangoModelFactory):
     created = factory.Faker('date')
     text = factory.Faker('text')
     user = factory.SubFactory(UserNotOwnerFactory)
+
+
+class BotFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Bot
+
+    chat_id = 633445694
+    # chat_id = factory.Faker('random_int', min=10000, max=99999)
+    user = factory.SubFactory(UserFactory)
