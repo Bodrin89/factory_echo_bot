@@ -22,6 +22,7 @@ class SendMessage(CreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
+        logger.debug(user)
         return Message.objects.select_related('user').filter(user_id=user.pk)
 
     def create(self, request, *args, **kwargs) -> Response:

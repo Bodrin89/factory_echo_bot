@@ -1,5 +1,9 @@
 import pytest
 from rest_framework.test import APIClient
+import logging
+
+
+logger = logging.getLogger('main')
 
 
 @pytest.fixture

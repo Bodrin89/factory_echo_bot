@@ -24,11 +24,11 @@ services:
       - my_network_bot
 
   redis:
-    container_name: redis_cached_bot
+    container_name: redis
     image: redis
     restart: always
     environment:
-      REDIS_HOST: redis_cached_bot
+      REDIS_HOST: redis
     ports:
       - 6379:6379
     networks:
@@ -42,6 +42,7 @@ services:
       - .env
     environment:
       POSTGRES_HOST: db
+      REDIS_HOST: redis
     depends_on:
       db:
         condition: service_healthy

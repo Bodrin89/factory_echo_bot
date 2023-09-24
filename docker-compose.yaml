@@ -41,6 +41,7 @@ services:
       - .env
     environment:
       POSTGRES_HOST: db
+      REDIS_HOST: 'redis'
     depends_on:
       db:
         condition: service_healthy
