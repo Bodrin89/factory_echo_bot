@@ -1,20 +1,19 @@
-
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
+import logging
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['*']
 
+ALLOWED_HOSTS = ['*']
 
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -27,6 +26,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'drf_spectacular',
 ]
 
 LOCAL_APPS = [
@@ -66,6 +66,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bot_task.wsgi.application'
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 DATABASES = {
     'default': {
@@ -87,8 +89,6 @@ CACHES = {
     }
 }
 
-
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -104,7 +104,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -113,9 +112,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 STATIC_URL = 'static/'
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -151,6 +148,17 @@ LOGGING = {
             'propagate': True
         }
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'echo_bot',
+    'DESCRIPTION': 'API для приема сообщений и отправки их в telegram-bot',
 }
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')

@@ -46,6 +46,7 @@ class TokenUserBot(UpdateAPIView):
     """Создание токена для подтверждения в telegram боте"""
     permission_classes = [IsAuthenticated]
     serializer_class = TokenUserSerializer
+    http_method_names = ['put']
 
     def get_object(self) -> User:
         return self.request.user

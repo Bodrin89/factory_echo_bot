@@ -6,6 +6,7 @@ from django.core.cache import cache
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -37,6 +38,7 @@ class ListMessage(ListAPIView):
     """Получение списка всех сообщений пользователя"""
     serializer_class = CreateListMessageSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         user = self.request.user
