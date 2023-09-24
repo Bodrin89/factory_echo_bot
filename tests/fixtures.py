@@ -1,7 +1,7 @@
-import pytest
-from rest_framework.test import APIClient
 import logging
 
+import pytest
+from rest_framework.test import APIClient
 
 logger = logging.getLogger('main')
 

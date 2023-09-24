@@ -10,8 +10,6 @@ from apps.user.models import User
 from apps.user.serializers import CreateUserSerializer, LoginSerializer, TokenUserSerializer
 from apps.user.services import UserServices
 
-logger = logging.getLogger('main')
-
 
 class SignUpView(CreateAPIView):
     """Регистрация пользователя"""
@@ -32,7 +30,6 @@ class LoginView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer
         user = UserServices.login_user(request, serializer)
-
         login(request=request, user=user)
         return Response(data={'id': user.pk, 'username': user.username, 'first_name': user.first_name})
 

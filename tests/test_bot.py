@@ -1,8 +1,7 @@
+import logging
 import os
 
 import pytest
-
-import logging
 from django.urls import reverse
 
 from apps.bot.services import SendMessageService
@@ -17,7 +16,7 @@ class TestBot:
 
     def test_get_list_message(self, get_auth_client, message, message_not_owner_factory):
         """Тест на получение списка сообщений авторизованным пользователем и получение только своих сообщений"""
-        os.environ["TEST_ENV"] = "for_test"
+        os.environ['TEST_ENV'] = 'for_test'
         response = get_auth_client.get(self.url)
         not_owner_message = message_not_owner_factory()
 

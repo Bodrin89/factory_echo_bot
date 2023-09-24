@@ -1,6 +1,6 @@
 from pytest_factoryboy import register
 
-from tests.factories import UserFactory, MessageFactory, UserNotOwnerFactory, MessageNotOwnerFactory, BotFactory
+from tests.factories import BotFactory, MessageFactory, MessageNotOwnerFactory, UserFactory, UserNotOwnerFactory
 
 pytest_plugins = 'tests.fixtures'
 

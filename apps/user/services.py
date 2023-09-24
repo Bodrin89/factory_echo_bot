@@ -9,8 +9,6 @@ from rest_framework.request import Request
 from apps.user.models import User
 from apps.user.serializers import CreateUserSerializer
 
-logger = logging.getLogger('main')
-
 
 class UserServices:
 

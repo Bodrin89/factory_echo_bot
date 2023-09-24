@@ -1,7 +1,6 @@
-
 import factory.django
 
-from apps.bot.models import Message, Bot
+from apps.bot.models import Bot, Message
 from apps.user.models import User
 
 
@@ -46,5 +45,5 @@ class BotFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Bot
 
-    chat_id = 633445694
+    chat_id = 0
     user = factory.SubFactory(UserFactory)
