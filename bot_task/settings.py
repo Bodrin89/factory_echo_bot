@@ -10,7 +10,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = os.getenv('DEBUG') == 'True'
+# DEBUG = os.getenv('DEBUG') == 'True'
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
@@ -66,8 +67,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'bot_task.wsgi.application'
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR.joinpath('static')
 
 DATABASES = {
     'default': {
