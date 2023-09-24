@@ -1,4 +1,3 @@
-import uuid
 
 import factory.django
 
@@ -15,7 +14,6 @@ class UserFactory(factory.django.DjangoModelFactory):
     bot_token = factory.Faker('password')
 
 
-#
 class UserNotOwnerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
@@ -49,5 +47,4 @@ class BotFactory(factory.django.DjangoModelFactory):
         model = Bot
 
     chat_id = 633445694
-    # chat_id = factory.Faker('random_int', min=10000, max=99999)
     user = factory.SubFactory(UserFactory)

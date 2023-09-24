@@ -2,7 +2,6 @@ import pytest
 from rest_framework.test import APIClient
 import logging
 
-from bot_task import settings
 
 logger = logging.getLogger('main')
 

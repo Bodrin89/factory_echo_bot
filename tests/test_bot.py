@@ -4,13 +4,10 @@ import pytest
 
 import logging
 from django.urls import reverse
-from dotenv import load_dotenv
 
 from apps.bot.services import SendMessageService
 
 logger = logging.getLogger('main')
-
-load_dotenv()
 
 
 @pytest.mark.django_db
