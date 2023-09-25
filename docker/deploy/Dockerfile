@@ -30,4 +30,3 @@ COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 COPY ../.. .
 
 ENTRYPOINT ["bash", "entrypoint.sh"]
-
