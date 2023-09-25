@@ -51,22 +51,22 @@ services:
     networks:
       - my_network_bot
 
-#  bot:
-#    platform: linux/amd64
-#    image: vladimirbodrin/the_factory_bot_task:$GITHUB_REF_NAME-$GITHUB_RUN_ID
-#    restart: always
-#    env_file:
-#      - .env
-#    environment:
-#      POSTGRES_HOST: db
-#    depends_on:
-#      db:
-#        condition: service_healthy
-#      api:
-#        condition: service_started
-#    command: python manage.py runbot
-#    networks:
-#      - my_network_bot
+  bot:
+    platform: linux/amd64
+    image: vladimirbodrin/the_factory_bot_task:$GITHUB_REF_NAME-$GITHUB_RUN_ID
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_HOST: db
+    depends_on:
+      db:
+        condition: service_healthy
+      api:
+        condition: service_started
+    command: python manage.py runbot
+    networks:
+      - my_network_bot
 
 
 volumes :

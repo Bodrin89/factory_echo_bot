@@ -27,7 +27,7 @@ ENV VIRTUAL_ENV=/code/.venv \
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-COPY .. .
+COPY ../.. .
 
 ENTRYPOINT ["bash", "entrypoint.sh"]
 

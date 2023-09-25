@@ -22,6 +22,10 @@ class SendMessage(CreateAPIView):
     serializer_class = CreateListMessageSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        user = self.request.user
+        return Message.objects.select_related('user').filter(user_id=user.pk)
+
     def create(self, request, *args, **kwargs) -> Response:
         """Создание нового сообщения и запись данных в кэш"""
         try:
