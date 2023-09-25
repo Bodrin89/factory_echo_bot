@@ -18,9 +18,9 @@ FROM python:3.11-slim-buster as runtime
 
 WORKDIR /code
 
-RUN groupadd -r docker && useradd -g docker docker
-RUN chown -R docker:docker /code
-USER docker
+#RUN groupadd -r docker && useradd -g docker docker
+#RUN chown -R docker:docker /code
+#USER docker
 
 ENV VIRTUAL_ENV=/code/.venv \
     PATH="/code/.venv/bin:$PATH"
