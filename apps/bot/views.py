@@ -44,4 +44,4 @@ class ListMessage(ListAPIView):
         user = self.request.user
         if cache.get(settings.MESSAGE_CACHE_NAME + str(user.id)) and os.environ['TEST_ENV'] == 'not_test':
             return cache.get(settings.MESSAGE_CACHE_NAME + str(user.id))
-        return Message.objects.select_related('user').filter(user_id=user.pk)
+        return Message.objects.select_related('user').filter(user_id=user.pk).order_by('-created')

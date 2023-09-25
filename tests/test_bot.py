@@ -19,10 +19,12 @@ class TestBot:
         os.environ['TEST_ENV'] = 'for_test'
         response = get_auth_client.get(self.url)
         not_owner_message = message_not_owner_factory()
+        logger.debug(response.data)
+        logger.debug(len(response.data))
 
         assert response.status_code == 200
-        assert response.data[0]['text'] == message.text
-        assert response.data[0]['text'] != not_owner_message.text
+        assert response.data['results'][0]['text'] == message.text
+        assert response.data['results'][0]['text'] != not_owner_message.text
 
     def test_get_list_message_not_auth(self, client):
         """Тест на получение списка сообщений не авторизованным пользователем"""
